@@ -1,7 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+const account = css`
+  display: block;
+  margin-bottom: 3px;
+  padding: 3px;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+`;
+
+const Input = styled.input`
+  ${account}
+`;
 
 const Main = styled.div`
   width: 250px;
@@ -24,6 +36,7 @@ const LoginBtn = styled.button`
   background-color: skyblue;
   border-color: transparent;
   color: white;
+  ${account}
 `;
 
 const Login = () => {
@@ -64,15 +77,15 @@ const Login = () => {
     passwordInput.current.value = "";
   };
 
-  const clickStopLogin = useCallback((e) => {
+  const preventLogin = useCallback((e) => {
     e.preventDefault();
     alert("1시간 뒤에 다시 시도해주세요.");
   }, []);
 
   useEffect(() => {
     if (Cookies.get("flag") === "no") {
-      idInput.current.addEventListener("keydown", clickStopLogin);
-      passwordInput.current.addEventListener("keydown", clickStopLogin);
+      idInput.current.addEventListener("keydown", preventLogin);
+      passwordInput.current.addEventListener("keydown", preventLogin);
     }
 
     if (Cookies.get("errNum") !== undefined) {
@@ -81,47 +94,34 @@ const Login = () => {
 
     return () => {
       if (idInput.current)
-        idInput.current.removeEventListener("keydown", clickStopLogin);
+        idInput.current.removeEventListener("keydown", preventLogin);
       if (passwordInput.current)
-        passwordInput.current.removeEventListener("keydown", clickStopLogin);
+        passwordInput.current.removeEventListener("keydown", preventLogin);
     };
   }, []);
 
   useEffect(() => {
     saveId();
     if (errNum >= 5) {
-      idInput.current.addEventListener("keydown", clickStopLogin);
-      passwordInput.current.addEventListener("keydown", clickStopLogin);
+      idInput.current.addEventListener("keydown", preventLogin);
+      passwordInput.current.addEventListener("keydown", preventLogin);
     }
-  }, [errNum, saveId, clickStopLogin]);
+  }, [errNum, saveId, preventLogin]);
 
   return (
     <Main>
       <Logo>Log in</Logo>
-      <div className="container">
+      <div>
         <form>
-          <input
-            type="text"
-            placeholder="ID"
-            id="id"
-            className="account"
-            ref={idInput}
-            required
-          />
-          <input
+          <Input type="text" placeholder="ID" id="id" ref={idInput} required />
+          <Input
             type="password"
             placeholder="password"
             id="password"
-            className="account"
             ref={passwordInput}
             required
           />
-          <LoginBtn
-            className="account"
-            type="submit"
-            ref={loginButton}
-            onClick={clickLogin}
-          >
+          <LoginBtn type="submit" ref={loginButton} onClick={clickLogin}>
             Log in
           </LoginBtn>
         </form>

@@ -27,7 +27,7 @@ const LogoutBtn = styled.button`
   color: white;
 `;
 
-const H2 = styled.h2`
+const Message = styled.h2`
   margin-top: 0;
   margin-bottom: 3rem;
 `;
@@ -46,13 +46,14 @@ const Complete = () => {
     sessionStorage.clear();
     Cookies.remove("ID");
     Cookies.remove("username");
+    Cookies.remove("errNum");
     Navigator(`/`);
   };
 
   return (
     <Main>
       <Logo> Complete! </Logo>
-      <H2>hello {name}! </H2>
+      <Message>hello {name}! </Message>
       <LogoutBtn className="account" onClick={clickLogout}>
         {" "}
         Log out{" "}
