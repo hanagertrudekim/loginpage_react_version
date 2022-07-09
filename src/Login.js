@@ -1,6 +1,30 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+const Main = styled.div`
+  width: 250px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+`;
+
+const Logo = styled.h1`
+  margin-top: 0px;
+  margin-bottom: 40px;
+`;
+
+const LoginBtn = styled.button`
+  width: 100%;
+  background-color: skyblue;
+  border-color: transparent;
+  color: white;
+`;
 
 const Login = () => {
   const idInput = useRef();
@@ -72,8 +96,8 @@ const Login = () => {
   }, [errNum, saveId, clickStopLogin]);
 
   return (
-    <div className="main">
-      <h1 className="logo">Log in</h1>
+    <Main>
+      <Logo>Log in</Logo>
       <div className="container">
         <form>
           <input
@@ -92,19 +116,18 @@ const Login = () => {
             ref={passwordInput}
             required
           />
-          <button
+          <LoginBtn
             className="account"
-            id="login"
             type="submit"
             ref={loginButton}
             onClick={clickLogin}
           >
             Log in
-          </button>
+          </LoginBtn>
         </form>
         <Link to="#"> forgot password?? </Link>
       </div>
-    </div>
+    </Main>
   );
 };
 
